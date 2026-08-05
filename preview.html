@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Purelane — Section Preview (Hero, Product Grid, Combos, Bundles, Reviews Rail)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   PREVIEW NOTE
+   This file is a static, non-Shopify stand-in for QA/demo purposes only.
+   The real deliverables are the 5 .liquid section files + purelane-base.css
+   + purelane-base.js in this project — this page just renders them with
+   sample content so the design can be checked in a plain browser, since
+   Liquid can't render outside a Shopify theme. Product "photos" below are
+   simple placeholder tiles (no real product photography was supplied with
+   the assignment) — swap for real product.featured_image output once wired
+   into an actual store.
+   ========================================================================= */
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0e0a1c;color:#ece6f7;line-height:1.6}
+.pl-demo-banner{position:sticky;top:0;z-index:99;background:#f0a03c;color:#17102b;font-size:12px;font-weight:700;letter-spacing:.05em;text-align:center;padding:8px 12px}
+
+/* ---- placeholder product tile (stand-in for real product photography) ---- */
+.pl-ph{display:flex;align-items:center;justify-content:center;font-size:34px;width:100%;height:100%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.20),transparent 60%),linear-gradient(155deg,var(--pl-brand-lt),var(--pl-brand));border-radius:inherit}
+.pl-ph-sm{width:100%;height:100%;border-radius:12px;font-size:22px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.22),transparent 60%),linear-gradient(155deg,var(--pl-brand-lt),var(--pl-brand))}
+</style>
+<style>
+/* ===== purelane-base.css + all 5 sections' {% stylesheet %} blocks, concatenated ===== */
+:root{
+  --pl-ink:#17102b;
+  --pl-deep:#241a3d;
+  --pl-brand:#4b3a8f;
+  --pl-brand-lt:#6b55b8;
+  --pl-paper:#ece6f7;
+  --pl-paper-2:rgba(236,230,247,.74);
+  --pl-paper-3:rgba(236,230,247,.52);
+  --pl-accent:#f0a03c;
+  --pl-accent-2:#c9761d;
+  --pl-surface:#faf7fd;
+  --pl-g-line:rgba(236,230,247,.22);
+  --pl-g-shadow:0 26px 74px rgba(18,12,34,.44);
+  --pl-g-inset:inset 0 1px 0 rgba(255,255,255,.24);
+  --pl-r:26px;
+  --pl-r-sm:16px;
+  --pl-maxw:1180px;
+  --pl-sec-y:34px;
+  --pl-ease:cubic-bezier(.2,.7,.2,1);
+}
+.purelane-section *{box-sizing:border-box}
+.purelane-section img,.purelane-section svg{display:block;max-width:100%}
+.purelane-section a{color:inherit;text-decoration:none}
+.purelane-section button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.purelane-section :focus-visible{outline:2px solid var(--pl-accent);outline-offset:3px;border-radius:6px}
+.pl-d1,.pl-d2,.pl-d3,.pl-d4{font-family:'Outfit',system-ui,sans-serif;text-transform:uppercase;letter-spacing:-.018em;font-weight:800;line-height:.87;color:var(--pl-surface);margin:0}
+.pl-d1{font-size:clamp(48px,8.6vw,112px)}
+.pl-d2{font-size:clamp(30px,4.6vw,54px);line-height:.94}
+.pl-d3{font-size:clamp(21px,2.5vw,30px);line-height:1.04;font-weight:700;letter-spacing:-.01em}
+.pl-d4{font-size:clamp(16px,1.6vw,19px);line-height:1.14;font-weight:700;letter-spacing:.005em}
+.pl-lime{color:var(--pl-accent)}
+.pl-lede{font-size:clamp(15px,1.35vw,17.5px);color:var(--pl-paper-2);max-width:44ch;margin:0}
+.pl-kicker{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--pl-paper-3)}
+.pl-wrap{max-width:var(--pl-maxw);margin:0 auto;padding:0 18px}
+.pl-glass{background:linear-gradient(158deg,rgba(236,230,247,.15),rgba(75,58,143,.20) 58%,rgba(23,16,43,.28));backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);border:1px solid var(--pl-g-line);border-radius:var(--pl-r);box-shadow:var(--pl-g-shadow),var(--pl-g-inset);position:relative;overflow:hidden}
+.pl-glass::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,rgba(255,255,255,.16),transparent 30%,transparent 72%,rgba(240,160,60,.07))}
+.pl-glass-2{background:linear-gradient(158deg,rgba(236,230,247,.10),rgba(0,48,46,.22));backdrop-filter:blur(18px) saturate(135%);-webkit-backdrop-filter:blur(18px) saturate(135%);border:1px solid rgba(236,230,247,.16);border-radius:var(--pl-r);box-shadow:0 18px 48px rgba(18,12,34,.36),inset 0 1px 0 rgba(255,255,255,.16);position:relative;overflow:hidden}
+.pl-btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;border-radius:999px;font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;transition:.35s var(--pl-ease);white-space:nowrap;border:0}
+.pl-btn svg{width:15px;height:15px;flex:0 0 auto}
+.pl-btn-primary{background:linear-gradient(135deg,var(--pl-accent-2),#5d8d1c);color:#08211a;box-shadow:0 12px 30px rgba(201,118,29,.34),inset 0 1px 0 rgba(255,255,255,.34)}
+.pl-btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(201,118,29,.44),inset 0 1px 0 rgba(255,255,255,.4)}
+.pl-btn-ghost{background:rgba(236,230,247,.10);border:1px solid rgba(236,230,247,.30);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--pl-surface)}
+.pl-btn-ghost:hover{background:rgba(236,230,247,.18);transform:translateY(-2px)}
+.pl-btn-sm{height:38px;padding:0 18px;font-size:11px;letter-spacing:.14em}
+.pl-btn:disabled{opacity:.55;pointer-events:none}
+.pl-rv{opacity:0;transform:translateY(30px);filter:blur(7px);transition:opacity .95s var(--pl-ease),transform .95s var(--pl-ease),filter .95s var(--pl-ease)}
+.pl-rv.pl-in{opacity:1;transform:none;filter:none}
+.pl-rv-d1{transition-delay:.09s}.pl-rv-d2{transition-delay:.18s}.pl-rv-d3{transition-delay:.27s}.pl-rv-d4{transition-delay:.36s}.pl-rv-d5{transition-delay:.45s}
+@media (prefers-reduced-motion: reduce){.pl-rv{opacity:1;transform:none;filter:none;transition:none}}
+.purelane-section{position:relative;padding:var(--pl-sec-y) 0;background:var(--pl-ink);color:var(--pl-paper)}
+.pl-panel-head{text-align:center;margin-bottom:26px}
+.pl-panel-head .pl-d2{margin-bottom:12px}
+.pl-rule{display:flex;align-items:center;gap:13px;margin:0 auto;max-width:240px;justify-content:center}
+.pl-rule i{height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(236,230,247,.44))}
+.pl-rule i:last-child{background:linear-gradient(90deg,rgba(236,230,247,.44),transparent)}
+.pl-rule svg{width:16px;height:16px;color:var(--pl-accent);flex:0 0 auto}
+.pl-vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.pl-hero{min-height:min(100svh,760px);display:flex;align-items:flex-end;padding-top:calc(var(--pl-sec-y) + 90px);background:linear-gradient(178deg,#1ea38d 0%,#0b8578 22%,#017069 48%,#4b3a8f 74%,#01524e 100%)}
+.pl-hero-grid{width:100%;position:relative;display:grid;grid-template-columns:1fr;gap:24px;align-items:flex-end}
+@media(min-width:900px){.pl-hero-grid{grid-template-columns:1.1fr .9fr}}
+.pl-hero-copy{max-width:600px;position:relative}
+.pl-hero h1{margin-bottom:20px;text-shadow:0 6px 40px rgba(2,20,19,.55)}
+.pl-hero-cta{display:flex;gap:11px;flex-wrap:wrap;margin-top:26px}
+.pl-badges{position:absolute;right:0;top:0;width:96px;z-index:4;display:none;flex-direction:column;gap:2px;padding:12px 8px;border-radius:20px}
+@media(min-width:900px){.pl-badges{display:flex;position:absolute;right:0;top:50%;transform:translateY(-50%)}}
+.pl-badge{text-align:center;padding:11px 4px}
+.pl-badge+.pl-badge{border-top:1px solid rgba(236,230,247,.14)}
+.pl-bi{width:38px;height:38px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:rgba(236,230,247,.10);border:1px solid rgba(236,230,247,.22);color:var(--pl-accent)}
+.pl-badge span{display:block;font-size:8.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--pl-paper-2);line-height:1.34}
+.pl-badgestrip{display:flex;gap:8px;margin-top:24px}
+.pl-badgestrip div{flex:1;text-align:center;padding:11px 6px;border-radius:14px;font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pl-paper-2);line-height:1.3}
+@media(min-width:901px){.pl-badgestrip{display:none}}
+.pl-hero-prod{position:relative;width:100%;max-width:340px;margin:0 auto;z-index:2}
+.pl-hstage{position:relative}
+.pl-hslide{display:none;position:relative;text-align:center}
+.pl-hslide.pl-on{display:block}
+.pl-hp{width:min(60vw,300px);aspect-ratio:1/1.3;margin:0 auto;border-radius:24px;filter:drop-shadow(0 34px 54px rgba(2,20,19,.6))}
+.pl-ptag{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:10px 16px;text-align:center;white-space:nowrap}
+.pl-ptag .pl-lbl{display:block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pl-paper-3);margin-bottom:3px}
+.pl-ptag .pl-val strong{font-family:'Outfit',sans-serif;font-size:19px;color:var(--pl-surface);margin-right:6px}
+.pl-ptag .pl-val s{font-size:12px;color:var(--pl-paper-3)}
+.pl-ptag .pl-cut{display:block;font-size:9.5px;font-weight:800;color:var(--pl-accent);margin-top:3px}
+.pl-hdots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.pl-hdots button{width:8px;height:8px;border-radius:50%;background:rgba(236,230,247,.3);padding:0}
+.pl-hdots button.pl-on{background:var(--pl-accent);width:22px;border-radius:999px}
+
+.pl-shelf{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:860px){.pl-shelf{grid-template-columns:repeat(4,1fr)}}
+.pl-card{padding:16px;display:flex;flex-direction:column;transition:.4s var(--pl-ease)}
+.pl-card:hover{transform:translateY(-5px)}
+.pl-card .pl-shot{height:150px;border-radius:14px;margin-bottom:14px;position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(236,230,247,.12),rgba(75,58,143,.2));border:1px solid rgba(236,230,247,.14)}
+.pl-card .pl-pill{position:absolute;top:9px;left:9px;z-index:1;font-size:8.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(23,16,43,.6);border:1px solid rgba(240,160,60,.32);color:var(--pl-accent)}
+.pl-card h3{font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--pl-surface);line-height:1.2;margin:0 0 7px}
+.pl-card .pl-rate{font-size:11.5px;color:var(--pl-paper-2);margin-bottom:10px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.pl-card .pl-rate b{color:var(--pl-accent);font-weight:700}
+.pl-card .pl-pr{margin-top:auto;display:flex;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.pl-card .pl-pr strong{font-family:'Outfit',sans-serif;font-size:18px;color:var(--pl-surface);font-weight:700}
+.pl-card .pl-pr s{font-size:12px;color:var(--pl-paper-3)}
+.pl-card .pl-pr em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--pl-accent)}
+.pl-card .pl-btn{width:100%;justify-content:center}
+
+.pl-comborail{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
+.pl-combo{flex:0 0 302px;scroll-snap-align:start;display:flex;flex-direction:column;padding:0;transition:.4s var(--pl-ease)}
+.pl-combo:hover{transform:translateY(-5px)}
+.pl-combo.pl-hero-combo{border-color:rgba(240,160,60,.42);box-shadow:0 26px 74px rgba(18,12,34,.44),0 0 0 1px rgba(240,160,60,.2),var(--pl-g-inset)}
+.pl-tray{padding:14px 14px 13px;border-bottom:1px solid rgba(236,230,247,.13);position:relative}
+.pl-save{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pl-accent);margin-bottom:10px}
+.pl-flag{position:absolute;top:14px;right:14px;font-size:8.6px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(240,160,60,.2);color:var(--pl-accent);border:1px solid rgba(240,160,60,.34)}
+.pl-stack{display:flex;align-items:center;justify-content:center;gap:8px}
+.pl-it{flex:1;text-align:center;font-size:9.5px;color:var(--pl-paper-3);line-height:1.3}
+.pl-itimg{width:56px;height:56px;margin:0 auto 6px;border-radius:12px;overflow:hidden}
+.pl-plus{color:var(--pl-paper-3);font-size:16px;font-weight:300}
+.pl-body{padding:15px 16px 18px;display:flex;flex-direction:column;flex:1}
+.pl-body h3{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;color:var(--pl-surface);margin:0}
+.pl-cnt{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pl-paper-3);margin-top:6px}
+.pl-inc{font-size:12.4px;color:var(--pl-paper-2);line-height:1.55;margin:11px 0 14px;flex:1}
+.pl-prow{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:6px}
+.pl-prow strong{font-family:'Outfit',sans-serif;font-size:25px;font-weight:800;color:var(--pl-surface);letter-spacing:-.02em}
+.pl-prow s{font-size:13px;color:var(--pl-paper-3)}
+.pl-prow em{font-style:normal;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pl-accent)}
+.pl-fine{font-size:10.4px;color:var(--pl-paper-3);margin-bottom:14px}
+.pl-combo .pl-btn{width:100%;justify-content:center}
+.pl-swipecue{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px;font-size:11px;color:var(--pl-paper-3);text-transform:uppercase;letter-spacing:.1em}
+.pl-swipecue svg{width:16px;height:16px}
+@media(min-width:900px){.pl-swipecue{display:none}}
+.pl-railnote{max-width:60ch;margin:14px auto 0;text-align:center;font-size:11.5px;color:var(--pl-paper-3)}
+@media(max-width:640px){.pl-combo{flex:0 0 268px}.pl-comborail{margin:0 -14px;padding:4px 14px 12px}}
+
+.pl-sec-pad{padding:clamp(26px,3.4vw,40px)}
+.pl-tiers{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:760px){.pl-tiers{grid-template-columns:repeat(3,1fr)}}
+.pl-tier{padding:24px 22px;transition:.4s var(--pl-ease)}
+.pl-tier:hover{transform:translateY(-5px)}
+.pl-tier.pl-best{border-color:rgba(240,160,60,.44);box-shadow:0 26px 74px rgba(18,12,34,.44),0 0 0 1px rgba(240,160,60,.2),var(--pl-g-inset)}
+.pl-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:14px;background:rgba(240,160,60,.18);border:1px solid rgba(240,160,60,.34);color:var(--pl-accent)}
+.pl-tierpix{min-height:60px;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.pl-tierpix img,.pl-tierpix .pl-ph-sm{height:60px;width:60px;filter:drop-shadow(0 10px 14px rgba(1,24,22,.5));border-radius:12px}
+.pl-tierpix.pl-five .pl-ph-sm{height:44px;width:44px}
+.pl-tier .pl-qty{font-family:'Outfit',sans-serif;font-weight:800;font-size:52px;line-height:.9;color:var(--pl-surface);letter-spacing:-.03em}
+.pl-tier .pl-qty small{font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pl-paper-3);display:block;margin-top:6px}
+.pl-tier .pl-price{font-family:'Outfit',sans-serif;font-weight:700;font-size:27px;color:var(--pl-accent);margin:16px 0 4px}
+.pl-tier .pl-price s{font-size:14px;color:var(--pl-paper-3);font-weight:500;margin-left:8px}
+.pl-tier ul{list-style:none;margin:16px 0 20px;padding:0;display:grid;gap:8px}
+.pl-tier li{display:flex;gap:9px;font-size:13px;color:var(--pl-paper-2)}
+.pl-tier li svg{width:14px;height:14px;color:var(--pl-accent);flex:0 0 auto;margin-top:4px}
+.pl-tier .pl-btn{width:100%;justify-content:center}
+
+.pl-revband{padding:var(--pl-sec-y) 0}
+.pl-revhead{display:flex;align-items:center;justify-content:center;gap:10px 18px;flex-wrap:wrap;margin-bottom:14px}
+.pl-revhead .pl-agg{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pl-paper-2)}
+.pl-revhead .pl-agg b{font-family:'Outfit',sans-serif;font-size:16px;color:var(--pl-accent);letter-spacing:0}
+.pl-revhead .pl-st{color:var(--pl-accent);font-size:12px;letter-spacing:.16em}
+.pl-revrail{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.pl-revtrack{display:flex;gap:12px;width:max-content;animation:pl-marq 52s linear infinite}
+.pl-revrail:hover .pl-revtrack,.pl-revrail:focus-within .pl-revtrack{animation-play-state:paused}
+@keyframes pl-marq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@media (prefers-reduced-motion: reduce){.pl-revtrack{animation:none;flex-wrap:wrap;width:auto}}
+.pl-rcard{flex:0 0 auto;width:284px;padding:15px 17px;border-radius:18px}
+.pl-rcard .pl-st{color:var(--pl-accent);font-size:10.5px;letter-spacing:.2em;margin-bottom:9px}
+.pl-rcard h3{font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--pl-surface);margin:0 0 7px}
+.pl-rcard p{font-size:12.6px;color:var(--pl-paper-2);line-height:1.52;margin:0 0 11px}
+.pl-rcard .pl-who{display:flex;align-items:center;gap:7px;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pl-paper-3)}
+.pl-rcard .pl-who b{color:var(--pl-surface);font-weight:700}
+.pl-rcard .pl-who svg{width:12px;height:12px;color:var(--pl-accent);flex:0 0 auto}
+</style>
+</head>
+<body>
+
+<div class="pl-demo-banner">Static preview of the 5 Purelane sections · sample data stands in for real Shopify products/reviews</div>
+
+<!-- ================= 1. HERO ================= -->
+<section class="purelane-section pl-hero" aria-label="Clean That Lasts">
+  <div class="pl-hero-grid pl-wrap">
+
+    <div class="pl-badges pl-glass-2" aria-label="Product promises">
+      <div class="pl-badge"><span class="pl-bi">🌿</span><span>Plant<br>powered</span></div>
+      <div class="pl-badge"><span class="pl-bi">🛡️</span><span>Safe for<br>kids &amp; pets</span></div>
+      <div class="pl-badge"><span class="pl-bi">✨</span><span>Zero harsh<br>chemicals</span></div>
+    </div>
+
+    <div class="pl-hero-copy">
+      <h1 class="pl-d1 pl-rv pl-in">Clean<br>That<br><span class="pl-lime">Lasts</span></h1>
+      <div class="pl-rule pl-rv pl-rv-d1" style="margin:0 0 20px;max-width:270px;justify-content:flex-start">
+        <i></i>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/></svg>
+        <i></i>
+      </div>
+      <p class="pl-lede pl-rv pl-rv-d2">Homecare that works on the toughest grime, made from plants. Kind to your home, your family and the world outside it.</p>
+      <div class="pl-hero-cta pl-rv pl-rv-d3">
+        <a class="pl-btn pl-btn-primary" href="#shop">Shop now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+        </a>
+        <a class="pl-btn pl-btn-ghost" href="#how">How it works</a>
+      </div>
+      <div class="pl-badgestrip pl-rv pl-rv-d4">
+        <div class="pl-glass-2">🌿 Plant powered</div>
+        <div class="pl-glass-2">🛡️ Kids &amp; pet safe</div>
+        <div class="pl-glass-2">✨ Zero harsh chem</div>
+      </div>
+    </div>
+
+    <div class="pl-hero-prod">
+      <div class="pl-hstage" id="hstage">
+        <div class="pl-hslide pl-on" data-n="1">
+          <div class="pl-hp"><div class="pl-ph">🧴</div></div>
+          <div class="pl-glass-2 pl-ptag"><span class="pl-lbl">Single bottle</span><span class="pl-val"><strong>₹200</strong><s>₹299</s></span><span class="pl-cut">33% off</span></div>
+        </div>
+        <div class="pl-hslide" data-n="2">
+          <div class="pl-hp"><div class="pl-ph">🧴🚰</div></div>
+          <div class="pl-glass-2 pl-ptag"><span class="pl-lbl">Any 2 products</span><span class="pl-val"><strong>₹349</strong><s>₹598</s></span><span class="pl-cut">Save ₹249</span></div>
+        </div>
+        <div class="pl-hslide" data-n="3">
+          <div class="pl-hp"><div class="pl-ph">🧴🚰✨</div></div>
+          <div class="pl-glass-2 pl-ptag"><span class="pl-lbl">Any 3 products</span><span class="pl-val"><strong>₹499</strong><s>₹897</s></span><span class="pl-cut">Save ₹398</span></div>
+        </div>
+      </div>
+      <div class="pl-hdots" id="hdots" role="tablist" aria-label="Show bundle size">
+        <button type="button" class="pl-on" role="tab" aria-selected="true" aria-label="Show slide 1 of 3"></button>
+        <button type="button" role="tab" aria-selected="false" aria-label="Show slide 2 of 3"></button>
+        <button type="button" role="tab" aria-selected="false" aria-label="Show slide 3 of 3"></button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= 2. PRODUCT GRID ================= -->
+<section class="purelane-section pl-shop" id="shop" aria-labelledby="shop-heading">
+  <div class="pl-wrap">
+    <div class="pl-panel-head pl-rv">
+      <span class="pl-kicker">Bestsellers</span>
+      <h2 class="pl-d2" id="shop-heading" style="margin-top:12px">Loved by 30,000 homes</h2>
+      <div class="pl-rule"><i></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/></svg><i></i></div>
+    </div>
+
+    <div class="pl-shelf" role="list">
+      <article class="pl-glass pl-card pl-rv" role="listitem">
+        <div class="pl-shot"><span class="pl-pill">Best seller</span><div class="pl-ph">🚰</div></div>
+        <h3>Tap cleaner &amp; limescale remover</h3>
+        <div class="pl-rate"><b aria-hidden="true">★ 4.8</b><span class="pl-vh">Rated 4.8 out of 5</span> · 237 reviews</div>
+        <div class="pl-pr"><strong>₹200</strong><s>₹299</s><em>33% off</em></div>
+        <button class="pl-btn pl-btn-ghost pl-btn-sm">Add to cart</button>
+      </article>
+      <article class="pl-glass pl-card pl-rv pl-rv-d1" role="listitem">
+        <div class="pl-shot"><span class="pl-pill">Best seller</span><div class="pl-ph">🧴</div></div>
+        <h3>Kitchen cleaner, foaming</h3>
+        <div class="pl-rate"><b aria-hidden="true">★ 4.8</b><span class="pl-vh">Rated 4.8 out of 5</span> · 254 reviews</div>
+        <div class="pl-pr"><strong>₹200</strong><s>₹299</s><em>33% off</em></div>
+        <button class="pl-btn pl-btn-ghost pl-btn-sm">Add to cart</button>
+      </article>
+      <article class="pl-glass pl-card pl-rv pl-rv-d2" role="listitem">
+        <div class="pl-shot"><span class="pl-pill">Top rated</span><div class="pl-ph">🪙</div></div>
+        <h3>Copper, bronze &amp; brass cleaner</h3>
+        <div class="pl-rate"><b aria-hidden="true">★ 4.8</b><span class="pl-vh">Rated 4.8 out of 5</span> · 231 reviews</div>
+        <div class="pl-pr"><strong>₹200</strong><s>₹299</s><em>33% off</em></div>
+        <button class="pl-btn pl-btn-ghost pl-btn-sm">Add to cart</button>
+      </article>
+      <article class="pl-glass pl-card pl-rv pl-rv-d3" role="listitem">
+        <div class="pl-shot"><span class="pl-pill">New</span><div class="pl-ph">🧺</div></div>
+        <h3>Washing machine cleaner &amp; descaler</h3>
+        <div class="pl-rate"><b aria-hidden="true">★ 4.8</b><span class="pl-vh">Rated 4.8 out of 5</span> · 183 reviews</div>
+        <div class="pl-pr"><strong>₹200</strong><s>₹299</s><em>33% off</em></div>
+        <button class="pl-btn pl-btn-ghost pl-btn-sm">Add to cart</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. BEST-SELLING COMBOS ================= -->
+<section class="purelane-section pl-combos" id="combos" aria-labelledby="combos-heading">
+  <div class="pl-wrap">
+    <div class="pl-panel-head pl-rv">
+      <span class="pl-kicker">Pre-built to save you money</span>
+      <h2 class="pl-d2" id="combos-heading" style="margin-top:12px">Best selling combos</h2>
+      <div class="pl-rule"><i></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/></svg><i></i></div>
+      <p class="pl-lede" style="margin:14px auto 0">Swipe through the boxes people order most. Each one is already priced below buying the same products on their own.</p>
+    </div>
+
+    <div class="pl-comborail pl-rv" role="list" tabindex="0" aria-label="Best-selling combos, scroll for more">
+      <article class="pl-glass pl-combo" role="listitem">
+        <div class="pl-tray">
+          <span class="pl-save">You save ₹398</span>
+          <span class="pl-flag">Most popular</span>
+          <div class="pl-stack">
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🧴</div></span>Cuts grease instantly</span>
+            <span class="pl-plus" aria-hidden="true">+</span>
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🍽️</div></span>Squeaky clean dishes</span>
+            <span class="pl-plus" aria-hidden="true">+</span>
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🚰</div></span>Melts hard water stains</span>
+          </div>
+        </div>
+        <div class="pl-body">
+          <h3>Kitchen essentials</h3>
+          <div class="pl-cnt">3 products</div>
+          <p class="pl-inc">Includes: Foaming Kitchen Cleaner, Dishwash Gel &amp; Tap Cleaner. Everything for a sparkling kitchen, no need to pick separately.</p>
+          <div class="pl-prow"><strong>₹499</strong><s>₹897</s><em>Save ₹398</em></div>
+          <div class="pl-fine">Inclusive of all taxes · COD available</div>
+          <a class="pl-btn pl-btn-ghost" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="pl-glass pl-combo" role="listitem">
+        <div class="pl-tray">
+          <span class="pl-save">You save ₹448</span>
+          <div class="pl-stack">
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🧺</div></span>Removes tough stains &amp; odour</span>
+            <span class="pl-plus" aria-hidden="true">+</span>
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🌿</div></span>Softens &amp; freshens every wash</span>
+            <span class="pl-plus" aria-hidden="true">+</span>
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🧺</div></span>Deep-cleans your machine</span>
+          </div>
+        </div>
+        <div class="pl-body">
+          <h3>Laundry care bundle</h3>
+          <div class="pl-cnt">3 products</div>
+          <p class="pl-inc">Includes: Laundry Detergent, Fabric Conditioner &amp; Machine Cleaner Powder. Softer, fresher wash, all in one box.</p>
+          <div class="pl-prow"><strong>₹499</strong><s>₹947</s><em>Save ₹448</em></div>
+          <div class="pl-fine">Inclusive of all taxes · COD available</div>
+          <a class="pl-btn pl-btn-ghost" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="pl-glass pl-combo pl-hero-combo" role="listitem">
+        <div class="pl-tray">
+          <span class="pl-save">Biggest saving</span>
+          <span class="pl-flag">Best value</span>
+          <div class="pl-stack">
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🧴</div></span>Cuts grease instantly</span>
+            <span class="pl-plus" aria-hidden="true">+</span>
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🧽</div></span>Kills 99.9% germs</span>
+            <span class="pl-plus" aria-hidden="true">+</span>
+            <span class="pl-it"><span class="pl-itimg"><div class="pl-ph-sm">🧼</div></span>Gentle hydration for hands</span>
+          </div>
+        </div>
+        <div class="pl-body">
+          <h3>Complete home bundle</h3>
+          <div class="pl-cnt">5 products</div>
+          <p class="pl-inc">Includes: Kitchen Cleaner, Laundry Detergent, Floor Cleaner, Toilet Cleaner &amp; Handwash. Our biggest saving box.</p>
+          <div class="pl-prow"><strong>₹799</strong><s>₹1,495</s><em>Save ₹696</em></div>
+          <div class="pl-fine">Inclusive of all taxes · COD available</div>
+          <a class="pl-btn pl-btn-primary" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+
+    <div class="pl-swipecue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>Swipe for more combos</div>
+    <p class="pl-railnote">Tapping "Shop bundle" opens the bundle product page. You can still review contents before you pay.</p>
+  </div>
+</section>
+
+<!-- ================= 4. BUNDLES ================= -->
+<section class="purelane-section pl-bundles" id="bundles" aria-labelledby="bundles-heading">
+  <div class="pl-wrap">
+    <div class="pl-glass pl-sec-pad pl-rv" style="margin-bottom:16px">
+      <div class="pl-panel-head" style="margin-bottom:0">
+        <span class="pl-kicker">Build your bundle</span>
+        <h2 class="pl-d2" id="bundles-heading" style="margin-top:12px">One box. Every room.</h2>
+        <p class="pl-lede" style="margin:0 auto">Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way.</p>
+      </div>
+    </div>
+
+    <div class="pl-tiers">
+      <article class="pl-glass pl-tier pl-rv">
+        <span class="pl-tag">Starter</span>
+        <div class="pl-tierpix"><div class="pl-ph-sm">🧴</div><div class="pl-ph-sm">🚰</div></div>
+        <div class="pl-qty">2<small>Products</small></div>
+        <div class="pl-price">₹349 <s>₹598</s></div>
+        <p style="font-size:12px;color:var(--pl-paper-2)">Flat ₹174 per product</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Pick any two products</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Free shipping across India</li>
+        </ul>
+        <a class="pl-btn pl-btn-ghost" href="#shop">Build this box</a>
+      </article>
+
+      <article class="pl-glass pl-tier pl-best pl-rv pl-rv-d2">
+        <span class="pl-tag">Most popular</span>
+        <div class="pl-tierpix"><div class="pl-ph-sm">🧴</div><div class="pl-ph-sm">🚰</div><div class="pl-ph-sm">🍽️</div></div>
+        <div class="pl-qty">3<small>Products</small></div>
+        <div class="pl-price">₹499 <s>₹897</s></div>
+        <p style="font-size:12px;color:var(--pl-paper-2)">Flat ₹166 per product</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Pick any three products</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Covers kitchen and laundry</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Free shipping across India</li>
+        </ul>
+        <a class="pl-btn pl-btn-primary" href="#shop">Build this box
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+        </a>
+      </article>
+
+      <article class="pl-glass pl-tier pl-rv pl-rv-d3">
+        <span class="pl-tag">Whole home</span>
+        <div class="pl-tierpix pl-five"><div class="pl-ph-sm">🧴</div><div class="pl-ph-sm">🚰</div><div class="pl-ph-sm">🧽</div><div class="pl-ph-sm">✨</div><div class="pl-ph-sm">🧺</div></div>
+        <div class="pl-qty">5<small>Products</small></div>
+        <div class="pl-price">₹799 <s>₹1495</s></div>
+        <p style="font-size:12px;color:var(--pl-paper-2)">Flat ₹160 per product</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Pick any five products</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Every room in one order</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Free shipping across India</li>
+        </ul>
+        <a class="pl-btn pl-btn-ghost" href="#shop">Build this box</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. REVIEWS RAIL ================= -->
+<section class="purelane-section pl-revband" id="reviews" aria-labelledby="reviews-heading">
+  <div class="pl-wrap">
+    <div class="pl-revhead pl-rv">
+      <span class="pl-kicker" id="reviews-heading">That's what they said</span>
+      <span class="pl-agg"><span class="pl-st" aria-hidden="true">★★★★★</span><span class="pl-vh">Rated 4.8 out of 5</span> <b>4.8</b> from 8,000+ reviews</span>
+      <span class="pl-agg">Loved by <b>12 lakh+</b> homes</span>
+    </div>
+  </div>
+
+  <div class="pl-revrail pl-rv" aria-label="Customer reviews, autoplaying">
+    <div class="pl-revtrack">
+      <!-- rendered twice for a seamless CSS-only loop -->
+      <article class="pl-glass-2 pl-rcard"><div class="pl-st" aria-hidden="true">★★★★★</div><h3>Works like a charm</h3><p>Finally an eco option that cleans as well as the chemical detergent I used for years, and it smells better.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><b>Anita</b><span>· Laundry detergent</span></div></article>
+      <article class="pl-glass-2 pl-rcard"><div class="pl-st" aria-hidden="true">★★★★★</div><h3>Best dishwash ever</h3><p>Our old dishwash left my help with dry, cracked skin. That stopped completely after we switched.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><b>Priya</b><span>· Dishwash gel</span></div></article>
+      <article class="pl-glass-2 pl-rcard"><div class="pl-st" aria-hidden="true">★★★★★</div><h3>Great product, great packaging</h3><p>Very soft on hands with a lovely fragrance, and it feels good to be using far less plastic.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><b>Sunita</b><span>· Liquid handwash</span></div></article>
+      <article class="pl-glass-2 pl-rcard"><div class="pl-st" aria-hidden="true">★★★★★</div><h3>Dog friendly</h3><p>We switched because chemical floor cleaners were setting off my dog's allergies. No reactions since.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><b>Rohit S.</b><span>· Floor cleaner</span></div></article>
+      <article class="pl-glass-2 pl-rcard" aria-hidden="true"><div class="pl-st">★★★★★</div><h3>Works like a charm</h3><p>Finally an eco option that cleans as well as the chemical detergent I used for years, and it smells better.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><b>Anita</b><span>· Laundry detergent</span></div></article>
+      <article class="pl-glass-2 pl-rcard" aria-hidden="true"><div class="pl-st">★★★★★</div><h3>Best dishwash ever</h3><p>Our old dishwash left my help with dry, cracked skin. That stopped completely after we switched.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><b>Priya</b><span>· Dishwash gel</span></div></article>
+      <article class="pl-glass-2 pl-rcard" aria-hidden="true"><div class="pl-st">★★★★★</div><h3>Great product, great packaging</h3><p>Very soft on hands with a lovely fragrance, and it feels good to be using far less plastic.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><b>Sunita</b><span>· Liquid handwash</span></div></article>
+      <article class="pl-glass-2 pl-rcard" aria-hidden="true"><div class="pl-st">★★★★★</div><h3>Dog friendly</h3><p>We switched because chemical floor cleaners were setting off my dog's allergies. No reactions since.</p><div class="pl-who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><b>Rohit S.</b><span>· Floor cleaner</span></div></article>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===== purelane-base.js (reveal-on-scroll) ===== */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function revealAll(root) {
+    var els = (root || document).querySelectorAll('.pl-rv:not(.pl-in)');
+    if (!els.length) return;
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('pl-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('pl-in'); io.unobserve(entry.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+  document.addEventListener('DOMContentLoaded', function () { revealAll(document); });
+})();
+
+/* ===== hero rotator (scoped, same logic as sections/purelane-hero.liquid) ===== */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stage = document.getElementById('hstage');
+  if (!stage) return;
+  var slides = [].slice.call(stage.querySelectorAll('.pl-hslide'));
+  var dotsWrap = document.getElementById('hdots');
+  var dots = dotsWrap ? [].slice.call(dotsWrap.querySelectorAll('button')) : [];
+  var i = 0, timer = null;
+  function go(n) {
+    i = (n + slides.length) % slides.length;
+    slides.forEach(function (s, idx) { s.classList.toggle('pl-on', idx === i); });
+    dots.forEach(function (d, idx) {
+      d.classList.toggle('pl-on', idx === i);
+      d.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+    });
+  }
+  function play() { if (!timer && !reduce) timer = setInterval(function () { go(i + 1); }, 3800); }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  dots.forEach(function (d, idx) { d.addEventListener('click', function () { stop(); go(idx); play(); }); });
+  stage.addEventListener('mouseenter', stop);
+  stage.addEventListener('mouseleave', play);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.isIntersecting ? play() : stop(); });
+    }, { threshold: 0.2 }).observe(stage);
+  } else { play(); }
+})();
+
+/* ===== demo-only: fake "Add to cart" feedback on the static preview ===== */
+document.querySelectorAll('.pl-card .pl-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var original = btn.textContent;
+    btn.textContent = 'Added ✓';
+    setTimeout(function () { btn.textContent = original; }, 1400);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+{% comment %}
+  Purelane — Bundles ("Build your bundle" pricing tiers)
+  Each tier = one real Shopify Bundles product from a merchant-selected
+  COLLECTION. Price/compare-at/url come straight from that product. Tier
+  copy (tag, feature checklist, preview cluster) comes from METAFIELDS on
+  the same product, editable in Shopify admin.
+
+  Required metafield definitions (Settings → Custom data → Products):
+
+    namespace  key                       type                        required
+    ---------  ------------------------  --------------------------  --------
+    custom     tier_tag                  single line text            no  (falls back to product.type)
+    custom     featured                  boolean                     no
+    custom     product_count             integer                     no  (falls back to bundle_preview_products.size)
+    custom     bundle_features           list of single line text    no
+    custom     bundle_preview_products   list of product reference   no  (up to 5 shown)
+{% endcomment %}
+
+{% liquid
+  assign collection = section.settings.collection
+  assign limit = section.settings.tier_limit
+%}
+
+<section class="purelane-section pl-bundles" aria-labelledby="pl-bundles-heading-{{ section.id }}">
+  <div class="pl-wrap">
+    <div class="pl-glass pl-sec-pad pl-rv" style="margin-bottom:16px">
+      <div class="pl-panel-head" style="margin-bottom:0">
+        {% if section.settings.kicker != blank %}<span class="pl-kicker">{{ section.settings.kicker }}</span>{% endif %}
+        <h2 class="pl-d2" id="pl-bundles-heading-{{ section.id }}" style="margin-top:12px">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}<p class="pl-lede" style="margin:0 auto">{{ section.settings.subheading }}</p>{% endif %}
+      </div>
+    </div>
+
+    {% if collection != blank and collection.products.size > 0 %}
+      <div class="pl-tiers">
+        {% for bundle in collection.products limit: limit %}
+          {% liquid
+            assign tag = bundle.metafields.custom.tier_tag | default: bundle.type
+            assign featured = bundle.metafields.custom.featured
+            assign features = bundle.metafields.custom.bundle_features
+            assign previews = bundle.metafields.custom.bundle_preview_products
+            assign product_count = bundle.metafields.custom.product_count | default: previews.size
+          %}
+          <article class="pl-glass pl-tier {% if featured %}pl-best{% endif %} pl-rv {% if forloop.index0 > 0 %}pl-rv-d{{ forloop.index0 | at_most: 5 }}{% endif %}">
+            {% if tag != blank %}<span class="pl-tag">{{ tag }}</span>{% endif %}
+
+            {% if previews.size > 0 %}
+              <div class="pl-tierpix {% if previews.size >= 5 %}pl-five{% endif %}" aria-hidden="true">
+                {% for comp in previews limit: 5 %}
+                  <img src="{{ comp.featured_image | image_url: width: 140 }}" alt="" loading="lazy" width="70" height="70">
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if product_count > 0 %}
+              <div class="pl-qty">{{ product_count }}<small>Products</small></div>
+            {% endif %}
+
+            <div class="pl-price">
+              {{ bundle.price | money }}
+              {% if bundle.compare_at_price > bundle.price %}<s>{{ bundle.compare_at_price | money }}</s>{% endif %}
+            </div>
+            {% if product_count > 0 %}
+              {% assign per_product = bundle.price | divided_by: product_count %}
+              <p class="pl-body-s" style="font-size:12px">Flat {{ per_product | money }} per product</p>
+            {% endif %}
+
+            {% if features.size > 0 %}
+              <ul>
+                {% for line in features %}
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+                    {{ line }}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <a class="pl-btn {% if featured %}pl-btn-primary{% else %}pl-btn-ghost{% endif %}" href="{{ bundle.url }}">
+              {{ section.settings.cta_label | default: 'Build this box' }}
+              {% if featured %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+              {% endif %}
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="pl-lede" style="margin:0 auto;text-align:center">Select a collection of Shopify Bundles products in the theme editor.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+.pl-sec-pad{padding:clamp(26px,3.4vw,40px)}
+.pl-tiers{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:760px){.pl-tiers{grid-template-columns:repeat(3,1fr)}}
+.pl-tier{padding:24px 22px;transition:.4s var(--pl-ease)}
+.pl-tier:hover{transform:translateY(-5px)}
+.pl-tier.pl-best{border-color:rgba(240,160,60,.44);box-shadow:0 26px 74px rgba(18,12,34,.44),0 0 0 1px rgba(240,160,60,.2),var(--pl-g-inset)}
+.pl-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:14px;background:rgba(240,160,60,.18);border:1px solid rgba(240,160,60,.34);color:var(--pl-accent)}
+.pl-tierpix{min-height:60px;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.pl-tierpix img{height:60px;width:auto;border-radius:12px;filter:drop-shadow(0 10px 14px rgba(1,24,22,.5))}
+.pl-tierpix.pl-five img{height:44px}
+.pl-tier .pl-qty{font-family:'Outfit',sans-serif;font-weight:800;font-size:52px;line-height:.9;color:var(--pl-surface);letter-spacing:-.03em}
+.pl-tier .pl-qty small{font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pl-paper-3);display:block;margin-top:6px}
+.pl-tier .pl-price{font-family:'Outfit',sans-serif;font-weight:700;font-size:27px;color:var(--pl-accent);margin:16px 0 4px}
+.pl-tier .pl-price s{font-size:14px;color:var(--pl-paper-3);font-weight:500;margin-left:8px}
+.pl-tier ul{list-style:none;margin:16px 0 20px;padding:0;display:grid;gap:8px}
+.pl-tier li{display:flex;gap:9px;font-size:13px;color:var(--pl-paper-2)}
+.pl-tier li svg{width:14px;height:14px;color:var(--pl-accent);flex:0 0 auto;margin-top:4px}
+.pl-tier .pl-btn{width:100%;justify-content:center}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Purelane Bundles",
+  "tag": "section",
+  "class": "purelane-bundles-section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Build your bundle" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "One box. Every room." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way." },
+    { "type": "collection", "id": "collection", "label": "Bundle tiers collection", "info": "Each product should be a Shopify Bundles product. Tier copy pulls from the metafields listed in this section's code comments." },
+    { "type": "range", "id": "tier_limit", "label": "Tiers to show", "min": 2, "max": 6, "step": 1, "default": 3 },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Build this box" }
+  ],
+  "presets": [{ "name": "Purelane Bundles" }]
+}
+{% endschema %}
